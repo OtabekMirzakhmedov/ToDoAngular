@@ -1,0 +1,119 @@
+﻿.card {
+    max-width: 500px;
+    margin-top: 15px;
+
+}
+.form {
+    margin-top: 5px;
+    min-width: 400px;
+    max-width: 500px;
+    width: 100%;
+    align-content: center;
+}
+.title {
+    font-size: x-small;
+    width: 100%;
+}
+
+.substep {
+    font-size: x-small;
+    width: 90%;
+    margin-left: 10%;
+}
+
+.subcheckbox{
+  
+    margin-left: 10%;
+}
+
+.panel{
+    width: 500px;
+    
+
+}
+
+.todolistheader{
+    margin-top:15px;
+}
+
+::ng-deep .mat-checkbox-checked .mat-checkbox-label {
+    color: grey;
+    text-decoration: line-through;
+
+}
+
+::ng-deep .mat-checkbox-checked.mat-primary .mat-checkbox-background {
+    background: green;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background: lightgreen;
+}
+
+
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    color: green;
+    align-content:flex-start;
+}
+
+.datepicker {
+    margin-left: 15px;
+    width: 125px;
+    height: 40px;
+    font-size: 10px;
+}
+
+.urgencypicker {
+    margin-left: 15px;
+    width: 150px;
+    
+}
+
+.buttons {
+    margin-top: 10px;
+    align-content: end;
+    font-size: x-small;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.input-group {
+    margin-right: 200px;
+    align-content: center;
+    width: 700px;
+    font-size: 5px;
+}
+
+.topbutton{
+    margin-right:10px;
+}
+
+.maticontoolbar {
+    vertical-align: -6px;
+    margin-right: 5px;
+    font-size: 30px;
+}
+
+.check{
+    background-color: whitesmoke;
+   
+}
+
+.toolbar-buttons{
+    align-content:flex-end;
+}
+
+
+
+
+

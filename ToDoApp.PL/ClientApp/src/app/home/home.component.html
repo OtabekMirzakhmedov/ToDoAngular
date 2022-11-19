@@ -1,0 +1,126 @@
+<p>
+    <mat-toolbar class="check">
+        <mat-toolbar-row>
+            <div class="col-2 justify-content-start">
+                <a class="navbar-brand" [routerLink]="['/']"><mat-icon [ngStyle]="{'color':'green'}" class="maticontoolbar">done_all</mat-icon>ToDoList</a>
+            </div>
+            <div class="col-8">
+                <div class="input-group justify-content-center">
+                    <input class="form-control py-2 rounded-pill mr-1 pr-5" type="search" id="example-search-input">
+                    <span class="input-group-append">
+                        <button class="btn rounded-pill border-0 ml-n5" type="button">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-2 ">
+                <div *ngIf="!loggedIn()">
+                    <div class="flex justify-content-end">
+                        <button mat-stroked-button color="primary" class="topbutton" [routerLink]="['/register']">
+                            SignUp
+                        </button>
+                        <button mat-raised-button class="topbutton" [ngStyle]="{'background-color':'darkgreen', 'color':'white'}" [routerLink]="['/login']">
+                            SignIn
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="loggedIn()">
+                    <div class="flex justify-content-end">
+                        <a color="primary" class="topbutton">
+                            {{UserDetails.fullName}}
+                        </a>
+                        <button mat-raised-button class="topbutton" [ngStyle]="{'background-color':'red', 'color':'white'}" (click)="Logout()">
+                            LogOut
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</p>
+
+
+<div class="container">
+
+    <div align="center">
+            <mat-card class="panel" >
+
+                <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <mat-form-field class="title" appearance="outline">
+                        <mat-label>Enter you tasks</mat-label>
+                        <input matInput placeholder="Enter you tasks" formControlName="title">
+                    </mat-form-field>
+                    <div formArrayName="steps">
+                        <mat-form-field class="substep" appearance="outline" *ngFor="let step of steps().controls; let i=index" [formGroupName]="i">
+                            <mat-label>Enter you tasks</mat-label>
+                            <input matInput placeholder="Enter you tasks" formControlName="stepText">
+                            <button matSuffix mat-icon-button type="button" (click)="removeStep(i)">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <!--<button mat-icon-button (click)="notify()" *ngIf="notifyme" [ngStyle]="{'color':'orange'}">
+                    <mat-icon>notifications</mat-icon>
+                </button>
+                <button mat-icon-button (click)="notify()" *ngIf="!notifyme">
+                    <mat-icon>notifications_none</mat-icon>
+                </button>-->
+                        <mat-form-field class="datepicker" appearance="outline">
+                            <input matInput [matDatepicker]="picker" placeholder="Deadline" formControlName="deadline">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+
+                        <button mat-raised-button style="margin-left:20px; height: 36px" type="button" [disabled]="form.invalid" (click)="addStep()">Add steps</button>
+                    </div>
+                    <div class="row buttons">
+                        <button mat-raised-button color="primary" style="margin-right:5px;" type="submit" [disabled]="form.invalid">Add</button>
+                        <button mat-flat-button [disabled]="form.invalid" style="margin-right:5px;" type="button" (click)="Cancel()">Cancel</button>
+                    </div>
+                </form>
+            </mat-card>
+      
+    </div>
+    <mat-divider class="todolistheader"></mat-divider>
+    <div align="center">
+        <h3>To-Do List</h3>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div *ngFor="let item of toDoList; let i=index" align="center">
+        <mat-card style="background-color: white" class="card">
+            <mat-card-header>
+                <mat-checkbox color="primary">{{item.text}}</mat-checkbox>
+                <!--<span> <i [ngClass]="item.done? 'bi bi-check-circle':'bi bi-circle'" (click)="statusChange(i)"></i> <span [ngClass]="item.done? 'strikethrough' : 'null'"> {{item.text}} </span></span>-->
+                
+            </mat-card-header>
+            <mat-divider></mat-divider>
+            <mat-card-content align="left" [ngStyle]="{'margin:top':'100px'}">
+                <div *ngFor="let sub of item.subStep; let j=index">
+                    <mat-checkbox color="accent" class="subcheckbox">
+                        {{sub}}
+                    </mat-checkbox>
+                </div>
+
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-chip-list>
+                <mat-chip>
+                    {{item.deadline | date : 'E, MMM d, y'}}
+                </mat-chip>
+            </mat-chip-list>
+
+        </mat-card>
+
+    </div>
+
+
+
+
+
+</div>
