@@ -75,11 +75,11 @@
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
 
-                        <button mat-raised-button style="margin-left:20px; height: 36px" type="button" [disabled]="form.invalid" (click)="addStep()">Add steps</button>
+                        <button mat-raised-button style="margin-left:20px; height: 36px" type="button" [disabled]="(form.get('title').touched && form.get('title').value==='') || form.get('title').pristine" (click)="addStep()">Add steps</button>
                     </div>
                     <div class="row buttons">
-                        <button mat-raised-button color="primary" style="margin-right:5px;" type="submit" [disabled]="form.invalid">Add</button>
-                        <button mat-flat-button [disabled]="form.invalid" style="margin-right:5px;" type="button" (click)="Cancel()">Cancel</button>
+                        <button mat-raised-button color="primary" style="margin-right:5px;" type="submit" [disabled]="(form.get('title').touched && form.get('title').value==='') || form.get('title').pristine">Add</button>
+                        <button mat-flat-button [disabled]="(form.get('title').touched && form.get('title').value==='') || form.get('title').pristine" style="margin-right:5px;" type="button" (click)="Cancel()">Cancel</button>
                     </div>
                 </form>
             </mat-card>

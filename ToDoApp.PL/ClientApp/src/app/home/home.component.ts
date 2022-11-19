@@ -29,7 +29,7 @@ export class HomeComponent {
 
     ngOnInit(): void {
         this.form = this.fb.group({
-            title: [this.initialText, [Validators.minLength(0), Validators.maxLength(255)]],
+            title: [this.initialText, Validators.compose([Validators.minLength(3), Validators.maxLength(255)])],
             steps: this.fb.array([]),
             deadline: this.selected
         });
@@ -42,7 +42,7 @@ export class HomeComponent {
     }
     newStep(): FormGroup {
         return this.fb.group({
-            stepText: ['', [Validators.minLength(0), Validators.maxLength(255)]]
+            stepText: this.initialText
         })
     }
 
@@ -120,7 +120,7 @@ export class HomeComponent {
             deadline: this.form.value.deadline,
             subStep: this.tempSubStep
         });
-        console.log(this.f['title'].value.length);
+        console.log(this.form.get('title'))
     
         this.tempSubStep = [];
         this.form.reset();
