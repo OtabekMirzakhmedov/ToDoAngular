@@ -21,8 +21,9 @@ export class HomeComponent {
     step = 1;
     form: FormGroup;
     tempSubStep: Steps[] = [];
-    editFrom: FormGroup;
-
+    editForm: FormGroup;
+    editMode = false;
+    activeToDo: number;
     
 
     constructor(private fb: FormBuilder, private router: Router, private service: UserService) { }
@@ -35,7 +36,11 @@ export class HomeComponent {
             steps: this.fb.array([]),
             deadline: this.selected
         });
-        this.editFrom = this.form;
+        this.editForm = this.fb.group({
+            titleEdit: '',
+            stepsEdit: this.fb.array([]),
+            deadlineEdit: this.selected
+        });
     }
     get f() {
         return this.form.controls;
@@ -43,9 +48,17 @@ export class HomeComponent {
     steps(): FormArray {
         return this.form.get("steps") as FormArray
     }
+    stepsEdit(): FormArray {
+        return this.editForm.get("stepsEdit") as FormArray
+    }
     newStep(): FormGroup {
         return this.fb.group({
             stepText: this.initialText
+        })
+    }
+    newStepEdit(): FormGroup {
+        return this.fb.group({
+            stepTextEdit: this.initialText
         })
     }
 
@@ -112,7 +125,7 @@ export class HomeComponent {
         this.step = 1;
         while (this.steps().length !== 0) {
             if (this.steps().at(0).value.stepText.length > 0) {
-                this.tempSubStep.push({ subStepText: this.steps().at(0).value.stepText, subStepDone: true });
+                this.tempSubStep.push({ subStepText: this.steps().at(0).value.stepText, subStepDone: false });
             }
             this.steps().removeAt(0)
         }
@@ -123,25 +136,59 @@ export class HomeComponent {
             deadline: this.form.value.deadline,
             subStep: this.tempSubStep
         });
-        console.log(this.form.get('title'))
     
         this.tempSubStep = [];
         this.form.reset();
         
     }
-    setStep(num: number) {
-        this.step = 0;
-    }
-    statusChange(index: number) {
-        console.log(index);
-        this.toDoList[index].done = true;
-    }
+
 
     onSubCheck(ob: MatCheckboxChange, i: number, j: number) {
         console.log(this.toDoList[i]);
         console.log(this.toDoList[i].subStep[j] + ' ' + ob.checked);
         this.toDoList[i].subStep[j].subStepDone = ob.checked;
     }
+    edit(i: number) {
+        while (this.stepsEdit().length !== 0) {
+            this.stepsEdit().removeAt(0)
+        }
+        this.editForm.get('titleEdit').setValue(this.toDoList[i].text);
+        this.editForm.get('deadlineEdit').setValue(this.toDoList[i].deadline);
+        this.toDoList[i].subStep.map((x) => {
+            var tempStepEditform = this.fb.group({
+                stepTextEdit: x.subStepText
+            });
+            this.stepsEdit().push(tempStepEditform);
+        });
+        this.activeToDo = i;
+        this.editMode = true;
+
+    }
+    cancelEdit() {
+        this.activeToDo = -1;
+    }
+    Update(i:number) {
+        console.log(this.editForm.value);
+        this.toDoList[i].deadline = this.editForm.value.deadlineEdit;
+        this.toDoList[i].text = this.editForm.value.titleEdit;
+        while (this.stepsEdit().length !== 0) {
+            if (this.stepsEdit().at(0).value.stepTextEdit.length > 0) {
+                this.tempSubStep.push({ subStepText: this.stepsEdit().at(0).value.stepTextEdit, subStepDone: false});
+            }
+            this.stepsEdit().removeAt(0)
+        }
+        this.toDoList[i].subStep = this.tempSubStep;
+        this.tempSubStep = [];
+        this.activeToDo = -1;
+    }
+
+    addStepEdit() {
+        this.stepsEdit().push(this.newStepEdit());
+    }
+
+    removeStepEdit(i: number) {
+        this.stepsEdit().removeAt(i);
+    } 
 
 
 

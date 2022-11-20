@@ -22,7 +22,7 @@
 }
 
 .subcheckbox{
-  
+    
     margin-left: 10%;
 }
 
@@ -112,6 +112,14 @@ a.navbar-brand {
 
 .toolbar-buttons{
     align-content:flex-end;
+}
+
+.editbuttonicon{
+    font-size: 25px;
+}
+
+.mat-slider{
+    width: 300px;
 }
 
 

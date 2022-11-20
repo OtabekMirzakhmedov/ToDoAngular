@@ -93,36 +93,92 @@
     <mat-divider></mat-divider>
 
     <div *ngFor="let item of toDoList; let i=index" align="center">
-        <mat-card style="background-color: white" class="card">
-            <mat-card-header>
+        <mat-card style="background-color: white" class="card" *ngIf="activeToDo!=i">
+            
+            <mat-card-header >
                 <mat-checkbox color="primary">{{item.text}}</mat-checkbox>
                 <!--<span> <i [ngClass]="item.done? 'bi bi-check-circle':'bi bi-circle'" (click)="statusChange(i)"></i> <span [ngClass]="item.done? 'strikethrough' : 'null'"> {{item.text}} </span></span>-->
 
             </mat-card-header>
             <mat-divider></mat-divider>
-            <mat-card-content align="left" [ngStyle]="{'margin:top':'100px'}">
+         
+            <mat-card-content align="left" style="margin-top:10px">
                 <div *ngFor="let sub of item.subStep; let j=index">
-                    <mat-checkbox color="accent" class="subcheckbox" (change)="onSubCheck($event , i,j)" [(ngModel)] = "sub.subStepDone">
+                    <mat-checkbox color="accent" class="subcheckbox" (change)="onSubCheck($event , i,j)" [(ngModel)]="sub.subStepDone">
                         {{sub.subStepText}}
                     </mat-checkbox>
                 </div>
 
+
+                <div  align="left">
+                    <span>
+                        progress
+                        <mat-slider class="mat-slider"
+                                    [max]="100"
+                                    [min]="0"
+                                    [step]="1"
+                                    [disabled]="false"
+                                    [thumbLabel]="true">
+                            <input matSliderThumb [(ngModel)]="value">
+                        </mat-slider>
+                    </span>
+                </div>
             </mat-card-content>
             <mat-divider></mat-divider>
-            <mat-chip-list>
-                <mat-chip>
-                    {{item.deadline | date : 'E, MMM d, y'}}
-                </mat-chip>
-            </mat-chip-list>
-            <mat-card-actions>
-                <button mat-icon-button type="button">
-                    <mat-icon>edit</mat-icon>
-                </button>
+            <mat-card-actions class="row">
+                <mat-chip-list>
+                    <mat-chip *ngIf="item.deadline!=null">
+                        {{item.deadline | date : 'E, MMM d, y'}}
+                    </mat-chip>
+                    <mat-chip>
+                        <button mat-icon-button type="button" (click)="edit(i)">
+                            <mat-icon class="editbuttonicon">edit</mat-icon>
+                        </button>
+                    </mat-chip>
+                </mat-chip-list>
+                
 
             </mat-card-actions>
 
         </mat-card>
-        
+        <mat-card class="panel" *ngIf="editMode && activeToDo==i">
+
+            <form class="form" [formGroup]="editForm" (ngSubmit)="Update(i)">
+                <mat-form-field class="title" appearance="outline">
+                    <mat-label>Enter you tasks</mat-label>
+                    <input matInput placeholder="Enter you tasks" formControlName="titleEdit">
+                </mat-form-field>
+                <div formArrayName="stepsEdit">
+                    <mat-form-field class="substep" appearance="outline" *ngFor="let step of stepsEdit().controls; let k=index" [formGroupName]="i">
+                        <mat-label>Enter you tasks</mat-label>
+                        <input matInput placeholder="Enter you tasks" formControlName="stepTextEdit">
+                        <button matSuffix mat-icon-button type="button" (click)="removeStepEdit(k)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <!--<button mat-icon-button (click)="notify()" *ngIf="notifyme" [ngStyle]="{'color':'orange'}">
+                    <mat-icon>notifications</mat-icon>
+                </button>
+                <button mat-icon-button (click)="notify()" *ngIf="!notifyme">
+                    <mat-icon>notifications_none</mat-icon>
+                </button>-->
+                    <mat-form-field class="datepicker" appearance="outline">
+                        <input matInput [matDatepicker]="picker" placeholder="Deadline" formControlName="deadlineEdit">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <button mat-raised-button style="margin-left:20px; height: 36px" type="button" (click)="addStepEdit()">Add steps</button>
+                </div>
+                <div class="row buttons">
+                    <button mat-raised-button color="primary" type="submit">Update</button>
+                    <button mat-flat-button (click)="cancelEdit()">Cancel</button>
+                </div>
+            </form>
+        </mat-card>
+
 
     </div>
 
