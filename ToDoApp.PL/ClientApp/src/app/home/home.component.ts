@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Form, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { UserService } from '../user-service/user.service';
 
 @Component({
@@ -19,7 +20,8 @@ export class HomeComponent {
     toDoList: todoItem[] = [];
     step = 1;
     form: FormGroup;
-    tempSubStep: string[] = [];
+    tempSubStep: Steps[] = [];
+    editFrom: FormGroup;
 
     
 
@@ -33,6 +35,7 @@ export class HomeComponent {
             steps: this.fb.array([]),
             deadline: this.selected
         });
+        this.editFrom = this.form;
     }
     get f() {
         return this.form.controls;
@@ -109,7 +112,7 @@ export class HomeComponent {
         this.step = 1;
         while (this.steps().length !== 0) {
             if (this.steps().at(0).value.stepText.length > 0) {
-                this.tempSubStep.push(this.steps().at(0).value.stepText);
+                this.tempSubStep.push({ subStepText: this.steps().at(0).value.stepText, subStepDone: true });
             }
             this.steps().removeAt(0)
         }
@@ -126,9 +129,6 @@ export class HomeComponent {
         this.form.reset();
         
     }
-    checkboxchecked(num: number, sub: string) {
-        console.log(this.toDoList[num]);
-    }
     setStep(num: number) {
         this.step = 0;
     }
@@ -136,6 +136,14 @@ export class HomeComponent {
         console.log(index);
         this.toDoList[index].done = true;
     }
+
+    onSubCheck(ob: MatCheckboxChange, i: number, j: number) {
+        console.log(this.toDoList[i]);
+        console.log(this.toDoList[i].subStep[j] + ' ' + ob.checked);
+        this.toDoList[i].subStep[j].subStepDone = ob.checked;
+    }
+
+
 
  
 
@@ -149,8 +157,14 @@ interface todoItem {
     text: string;
     done: boolean;
     deadline: Date | null;
-    subStep: string[];
+    subStep: Steps[];
 }
+
+interface Steps {
+    subStepText: string;
+    subStepDone: boolean;
+}
+
 
 
 

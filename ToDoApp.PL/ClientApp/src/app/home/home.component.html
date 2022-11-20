@@ -97,13 +97,13 @@
             <mat-card-header>
                 <mat-checkbox color="primary">{{item.text}}</mat-checkbox>
                 <!--<span> <i [ngClass]="item.done? 'bi bi-check-circle':'bi bi-circle'" (click)="statusChange(i)"></i> <span [ngClass]="item.done? 'strikethrough' : 'null'"> {{item.text}} </span></span>-->
-                
+
             </mat-card-header>
             <mat-divider></mat-divider>
             <mat-card-content align="left" [ngStyle]="{'margin:top':'100px'}">
                 <div *ngFor="let sub of item.subStep; let j=index">
-                    <mat-checkbox color="accent" class="subcheckbox">
-                        {{sub}}
+                    <mat-checkbox color="accent" class="subcheckbox" (change)="onSubCheck($event , i,j)" [(ngModel)] = "sub.subStepDone">
+                        {{sub.subStepText}}
                     </mat-checkbox>
                 </div>
 
@@ -114,8 +114,15 @@
                     {{item.deadline | date : 'E, MMM d, y'}}
                 </mat-chip>
             </mat-chip-list>
+            <mat-card-actions>
+                <button mat-icon-button type="button">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+            </mat-card-actions>
 
         </mat-card>
+        
 
     </div>
 
