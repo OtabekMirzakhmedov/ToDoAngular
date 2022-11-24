@@ -56,9 +56,9 @@ export class HomeComponent {
             stepText: this.initialText
         })
     }
-    newStepEdit(): FormGroup {
+    newStepEdit(sometext:string): FormGroup {
         return this.fb.group({
-            stepTextEdit: this.initialText
+            stepTextEdit: sometext
         })
     }
 
@@ -134,6 +134,7 @@ export class HomeComponent {
             text: this.form.value.title,
             done: false,
             deadline: this.form.value.deadline,
+            progress: 0,
             subStep: this.tempSubStep
         });
     
@@ -154,12 +155,19 @@ export class HomeComponent {
         }
         this.editForm.get('titleEdit').setValue(this.toDoList[i].text);
         this.editForm.get('deadlineEdit').setValue(this.toDoList[i].deadline);
-        this.toDoList[i].subStep.map((x) => {
-            var tempStepEditform = this.fb.group({
-                stepTextEdit: x.subStepText
-            });
-            this.stepsEdit().push(tempStepEditform);
-        });
+
+        for (let sub of this.toDoList[i].subStep) {
+            
+            this.stepsEdit().push(this.newStepEdit(sub.subStepText));
+
+        }
+
+        //this.toDoList[i].subStep.forEach((x) => {
+        //    var tempStepEditform = this.fb.group({
+        //        stepTextEdit: x.subStepText
+        //    });
+        //    this.stepsEdit().push(tempStepEditform);
+        //});
         this.activeToDo = i;
         this.editMode = true;
 
@@ -183,12 +191,16 @@ export class HomeComponent {
     }
 
     addStepEdit() {
-        this.stepsEdit().push(this.newStepEdit());
+        this.stepsEdit().push(this.newStepEdit(this.initialText));
     }
 
     removeStepEdit(i: number) {
         this.stepsEdit().removeAt(i);
     } 
+
+    progressChange(i: number, event) {
+        this.toDoList[i].progress = event.value;
+    }
 
 
 
@@ -204,6 +216,7 @@ interface todoItem {
     text: string;
     done: boolean;
     deadline: Date | null;
+    progress: number;
     subStep: Steps[];
 }
 

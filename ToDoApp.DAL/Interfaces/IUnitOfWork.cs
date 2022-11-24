@@ -7,7 +7,9 @@ namespace ToDoApp.DAL.Interfaces
 {
     public interface IUnitOfWork
     {
-        IUserRepository UserRepository { get; }
+        IToDoRepository ToDoRepository { get; }
+
+        IStepRepository StepRepository { get; }
 
         Task SaveAsync();
 

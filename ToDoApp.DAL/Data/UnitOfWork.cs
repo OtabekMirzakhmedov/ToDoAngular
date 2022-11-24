@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToDoApp.DAL.Data;
 using ToDoApp.DAL.Interfaces;
+using ToDoApp.DAL.Repositories;
 
 namespace GameStore.DAL.Data
 {
@@ -16,12 +17,12 @@ namespace GameStore.DAL.Data
         {
             _dbContext = dbContext;
 
-
+            ToDoRepository = new ToDoRepository(_dbContext);
+            StepRepository = new StepRepository(_dbContext);
         }
 
-        public IUserRepository UserRepository { get; private set; }
-
-
+        public IToDoRepository ToDoRepository { get; private set; }
+        public IStepRepository StepRepository { get; private set; }
 
         public void Dispose()
         {

@@ -12,5 +12,7 @@ namespace ToDoApp.DAL.Entities
         [MaxLength(255)]
         public string FullName { get; set; }
 
+        public ICollection<ToDo> toDos { get; set; }
+
     }
 }

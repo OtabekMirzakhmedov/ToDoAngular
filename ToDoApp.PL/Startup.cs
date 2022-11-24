@@ -20,6 +20,11 @@ using Microsoft.IdentityModel.Tokens;
 
 using System;
 using System.Text;
+using AutoMapper;
+using ToDoApp.BL;
+using ToDoApp.DAL.Interfaces;
+using GameStore.DAL.Data;
+using ToDoApp.DAL.Repositories;
 
 namespace ToDoAngular
 {
@@ -35,6 +40,13 @@ namespace ToDoAngular
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new AutomapperProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -82,6 +94,10 @@ namespace ToDoAngular
 
 
             services.AddTransient<IAppUserService, AppUserService>();
+            services.AddTransient<IToDoService, ToDoService>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IToDoRepository, ToDoRepository>();
+            services.AddTransient<IStepRepository, StepRepository>();
 
             services.AddSwaggerGen(options => {
                 options.SwaggerDoc("v1", new OpenApiInfo

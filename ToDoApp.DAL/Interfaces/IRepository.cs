@@ -7,7 +7,7 @@ using ToDoApp.DAL.Entities;
 
 namespace ToDoApp.DAL.Interfaces
 {
-    public interface IRepository <TEntity>
+    public interface IRepository <TEntity> where TEntity : BaseEntity
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
 

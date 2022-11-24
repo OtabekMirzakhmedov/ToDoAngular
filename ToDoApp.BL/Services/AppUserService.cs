@@ -51,7 +51,8 @@ namespace ToDoApp.BL.Services
             AppUser user = await _userManager.FindByIdAsync(userId);
             UserViewModel result = new UserViewModel
             {
-                FullName = user.FullName
+                FullName = user.FullName,
+                Id = user.Id
             };
             return result;
         }
