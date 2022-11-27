@@ -46,6 +46,11 @@ namespace ToDoApp.BL.Services
             }
         }
 
+        /// <summary>
+        /// Finds user by his/her id and return UserViewModel
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<UserViewModel> GetUserByIdAsync(string userId)
         {
             AppUser user = await _userManager.FindByIdAsync(userId);

@@ -12,6 +12,7 @@ namespace ToDoApp.BL
         public AutomapperProfile()
         {
             CreateMap<ToDo, ToDoModel>().ReverseMap();
+            CreateMap<Step, StepModel>().ReverseMap();
         }
     }
 }

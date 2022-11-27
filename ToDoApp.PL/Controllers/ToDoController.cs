@@ -20,10 +20,10 @@ namespace ToDoApp.PL.Controllers
             toDoService = ToDoService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ToDoModel>>> Get()
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<ToDoModel>>> Get([FromRoute] string id)
         {
-            return Ok(await toDoService.GetAllAsync());
+            return Ok(await toDoService.GetAllAsync(id));
         }
         
         [HttpPost]
@@ -31,6 +31,24 @@ namespace ToDoApp.PL.Controllers
         {
             await toDoService.AddAsync(value);
             return Created("", value);
+        }
+
+        [HttpPut]
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] ToDoModel value)
+        {
+
+            await toDoService.UpdateAsync(value);
+
+            return Ok();
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            await toDoService.DeleteAsync(id);
+            return Ok();
         }
 
     }

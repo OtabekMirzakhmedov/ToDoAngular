@@ -57,8 +57,9 @@ namespace ToDoApp.PL.Controllers
                 return BadRequest(new { message = "Username or password is incorrect." });
         }
 
-        [HttpGet]
+
         [Authorize]
+        [HttpGet]
         [Route("profile")]
         public async Task<ActionResult<UserViewModel>> GetUserProfile()
         {

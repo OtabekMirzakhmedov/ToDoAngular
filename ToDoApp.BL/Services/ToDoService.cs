@@ -24,20 +24,23 @@ namespace ToDoApp.BL.Services
 
         public async Task AddAsync(ToDoModel model)
         {
-
-            await unitOfWork.ToDoRepository.AddAsync(mapper.Map<ToDo>(model));
+            ToDo toDo = mapper.Map<ToDo>(model);
+            await unitOfWork.ToDoRepository.AddAsync(toDo);
             await unitOfWork.SaveAsync();
+            model.Id = toDo.Id;
         }
 
-        public Task DeleteAsync(int modelId)
+        public async Task DeleteAsync(int modelId)
         {
-            throw new NotImplementedException();
+            await unitOfWork.ToDoRepository.DeleteByIdAsync(modelId);
+            await unitOfWork.SaveAsync();
+           
         }
 
-        public async Task<IEnumerable<ToDoModel>> GetAllAsync()
+        public async Task<IEnumerable<ToDoModel>> GetAllAsync(string userId)
         {
             IEnumerable<ToDo> todos = await unitOfWork.ToDoRepository.GetAllWithDetailsAsync();
-            return todos.Select(i => mapper.Map<ToDoModel>(i));
+            return todos.Where(i => i.AppUserId == userId).Select(i => mapper.Map<ToDoModel>(i));
         }
 
         public Task<ToDoModel> GetByIdAsync(int id)
@@ -45,9 +48,11 @@ namespace ToDoApp.BL.Services
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(ToDoModel model)
+        public async Task UpdateAsync(ToDoModel model)
         {
-            throw new NotImplementedException();
+            ToDo toDo = mapper.Map<ToDo>(model);
+            unitOfWork.ToDoRepository.Update(toDo);
+            await unitOfWork.SaveAsync();
         }
     }
 }

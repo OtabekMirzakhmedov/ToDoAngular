@@ -44,7 +44,9 @@ namespace ToDoApp.DAL.Repositories
             return await dbContext.Set<TEntity>().FindAsync(id);
         }
 
-        
-
+        public void Update(TEntity entity)
+        {
+            dbContext.Set<TEntity>().Update(entity);
+        }
     }
 }

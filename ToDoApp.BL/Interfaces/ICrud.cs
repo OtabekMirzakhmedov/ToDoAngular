@@ -7,7 +7,7 @@ namespace ToDoApp.BL.Interfaces
 {
     public interface ICrud<TModel> where TModel : class
     {
-        Task<IEnumerable<TModel>> GetAllAsync();
+        Task<IEnumerable<TModel>> GetAllAsync(string userId);
 
         Task<TModel> GetByIdAsync(int id);
 

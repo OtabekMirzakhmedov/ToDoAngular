@@ -11,11 +11,15 @@ namespace ToDoApp.BL.Models
 
         public string Text { get; set; }
 
-        public DateTime Deadline { get; set; }
+        public DateTime? Deadline { get; set; }
+
+        public DateTime CreatedAt { get; set; }
 
         public int Progress { get; set; }
 
-        public string UserId { get; set; }
+        public bool IsCompleted { get; set; }
+
+        public string AppUserId { get; set; }
 
         public ICollection<Step> Steps { get; set; }
 

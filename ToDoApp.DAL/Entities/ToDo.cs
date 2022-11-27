@@ -11,12 +11,10 @@ namespace ToDoApp.DAL.Entities
         [Required]
         [MaxLength(255)]
         public string Text { get; set; }
-        
-        [MaybeNull]
-        public DateTime Deadline { get; set; }
+        public DateTime? Deadline { get; set; }
         public int Progress { get; set; }
+        public DateTime CreatedAt { get; set; }
         public bool IsCompleted { get; set; }
-
         public string AppUserId { get; set; }
         public ICollection<Step> Steps { get; set; }
     }
